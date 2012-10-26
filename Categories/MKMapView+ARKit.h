@@ -11,9 +11,9 @@
 
 @interface MKMapView (ARKit)
 
-#define PADDING_MULTIPLIER  1.05
-#define LATITUDE_PADDING    0.1
-#define LONGITUDE_PADDING   0.1
+#define PADDING_MULTIPLIER  1.025
+#define LATITUDE_PADDING    0.0125
+#define LONGITUDE_PADDING   0.0125
 
 // Returns map's annotations without the user's location
 - (NSArray *)annotationsWithoutUserLocation;
