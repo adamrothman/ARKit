@@ -13,26 +13,29 @@
 
 - (NSArray *)annotationsWithoutUserLocation {
   if (!self.userLocation) return self.annotations;
-
   NSMutableArray *annotations = [NSMutableArray arrayWithArray:self.annotations];
   [annotations removeObject:self.userLocation];
   return annotations;
 }
 
-- (void)zoomToFitAnnotation:(id<MKAnnotation>)annotation
-                   animated:(BOOL)animated {
-  MKCoordinateRegion region = MKCoordinateRegionMake(annotation.coordinate,
-                                                     MKCoordinateSpanMake(LATITUDE_PADDING, LONGITUDE_PADDING));
-
+- (void)zoomToFitAnnotation:(id<MKAnnotation>)annotation animated:(BOOL)animated {
+  MKCoordinateRegion region = MKCoordinateRegionMake(annotation.coordinate, MKCoordinateSpanMake(LATITUDE_PADDING, LONGITUDE_PADDING));
   [self setRegion:[self regionThatFits:region] animated:animated];
 }
 
-- (void)zoomToFitAnnotationsAnimated:(BOOL)animated {
-  if (self.annotations.count) {
+- (void)zoomToFitAnnotationsWithUser:(BOOL)user animated:(BOOL)animated {
+  NSArray *annotations = nil;
+  if (user || !self.userLocation) {
+    annotations = self.annotations;
+  } else {
+    annotations = self.annotationsWithoutUserLocation;
+  }
+
+  if (annotations.count) {
     CLLocationCoordinate2D topLeft = CLLocationCoordinate2DMake(-90, 180);
     CLLocationCoordinate2D bottomRight = CLLocationCoordinate2DMake(90, -180);
 
-    for (id<MKAnnotation> annotation in self.annotations) {
+    for (id<MKAnnotation> annotation in annotations) {
       topLeft.latitude = fmax(topLeft.latitude, annotation.coordinate.latitude);
       topLeft.longitude = fmin(topLeft.longitude, annotation.coordinate.longitude);
 
@@ -52,9 +55,7 @@
 
 - (void)zoomToFitUserAnimated:(BOOL)animated {
   if (self.userLocation) {
-    MKCoordinateRegion region = MKCoordinateRegionMake(self.userLocation.location.coordinate,
-                                                       MKCoordinateSpanMake(LATITUDE_PADDING, LONGITUDE_PADDING));
-
+    MKCoordinateRegion region = MKCoordinateRegionMake(self.userLocation.location.coordinate, MKCoordinateSpanMake(LATITUDE_PADDING, LONGITUDE_PADDING));
     [self setRegion:[self regionThatFits:region] animated:animated];
   }
 }
