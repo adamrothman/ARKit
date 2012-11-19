@@ -11,10 +11,8 @@
 
 @implementation ARTextView
 
-@synthesize placeholderText=_placeholderText;
-
-- (void)setPlaceholderText:(NSString *)placeholderText {
-  _placeholderText = placeholderText;
+- (void)setPlaceholder:(NSString *)placeholder {
+  _placeholder = [placeholder copy];
   [self setNeedsDisplay];
 }
 
@@ -22,18 +20,13 @@
   [super drawRect:rect];
 
   // Draw placeholder if set and no text
-  if (self.placeholderText && !self.text.length) {
+  if (self.placeholder && !self.text.length) {
     CGRect placeholderRect;
     placeholderRect.origin = CGPointMake(8, 8);
-    placeholderRect.size = [self.placeholderText sizeWithFont:self.font
-                                            constrainedToSize:CGSizeMake(self.bounds.size.width - 16, self.bounds.size.height - 16)];
+    placeholderRect.size = [self.placeholder sizeWithFont:self.font constrainedToSize:CGSizeMake(self.bounds.size.width - 16, self.bounds.size.height - 16)];
 
-    [[UIColor colorWithRed:179.0/255.0
-                     green:179.0/255.0
-                      blue:179.0/255.0
-                     alpha:1] set];
-    [self.placeholderText drawInRect:placeholderRect
-                            withFont:self.font];
+    [[UIColor colorWithRed:179.0/255.0 green:179.0/255.0 blue:179.0/255.0 alpha:1] set];
+    [self.placeholder drawInRect:placeholderRect withFont:self.font];
   }
 }
 

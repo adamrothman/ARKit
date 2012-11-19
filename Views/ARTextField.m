@@ -12,10 +12,7 @@
 @implementation ARTextField
 
 - (CGRect)textRectForBounds:(CGRect)bounds {
-  return CGRectMake(bounds.origin.x + 7,
-                    bounds.origin.y + 6,
-                    bounds.size.width - 14,
-                    bounds.size.height - 12);
+  return CGRectMake(bounds.origin.x + 7, bounds.origin.y + 6, bounds.size.width - 14, bounds.size.height - 12);
 }
 
 - (CGRect)placeholderRectForBounds:(CGRect)bounds {
