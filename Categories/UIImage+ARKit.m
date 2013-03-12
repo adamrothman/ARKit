@@ -5,6 +5,8 @@
 //  Created by Adam Rothman on 3/11/13.
 //  Copyright (c) 2013 Adam Rothman. All rights reserved.
 //
+//  Borrowed and condensed from http://vocaro.com/trevor/blog/2009/10/12/resize-a-uiimage-the-right-way/
+//
 
 #import "UIImage+ARKit.h"
 
