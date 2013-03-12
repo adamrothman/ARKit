@@ -16,7 +16,6 @@
     if (block) block();
     return;
   }
-
   NSError *error = nil;
   if ([self save:&error]) {
     if (block) block();
