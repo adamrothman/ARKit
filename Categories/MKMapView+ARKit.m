@@ -9,6 +9,10 @@
 
 #import "MKMapView+ARKit.h"
 
+static CLLocationDegrees paddingMultiplier = 1.025;
+static CLLocationDegrees latitudePadding = 0.0125;
+static CLLocationDegrees longitudePadding = 0.0125;
+
 @implementation MKMapView (ARKit)
 
 - (NSArray *)annotationsWithoutUserLocation {
@@ -19,7 +23,7 @@
 }
 
 - (void)zoomToFitAnnotation:(id<MKAnnotation>)annotation animated:(BOOL)animated {
-  MKCoordinateRegion region = MKCoordinateRegionMake(annotation.coordinate, MKCoordinateSpanMake(LATITUDE_PADDING, LONGITUDE_PADDING));
+  MKCoordinateRegion region = MKCoordinateRegionMake(annotation.coordinate, MKCoordinateSpanMake(latitudePadding, longitudePadding));
   [self setRegion:[self regionThatFits:region] animated:animated];
 }
 
@@ -40,7 +44,7 @@
       bottomRight.longitude = fmax(bottomRight.longitude, annotation.coordinate.longitude);
     }
     CLLocationCoordinate2D center = CLLocationCoordinate2DMake(topLeft.latitude - (topLeft.latitude - bottomRight.latitude) / 2, topLeft.longitude + (bottomRight.longitude - topLeft.longitude) / 2);
-    MKCoordinateSpan span = MKCoordinateSpanMake(fabs(topLeft.latitude - bottomRight.latitude) * PADDING_MULTIPLIER, fabs(bottomRight.longitude - topLeft.longitude) * PADDING_MULTIPLIER);
+    MKCoordinateSpan span = MKCoordinateSpanMake(fabs(topLeft.latitude - bottomRight.latitude) * paddingMultiplier, fabs(bottomRight.longitude - topLeft.longitude) * paddingMultiplier);
     MKCoordinateRegion region = MKCoordinateRegionMake(center, span);
     [self setRegion:[self regionThatFits:region] animated:animated];
   }
@@ -48,7 +52,7 @@
 
 - (void)zoomToFitUserAnimated:(BOOL)animated {
   if (self.userLocation) {
-    MKCoordinateRegion region = MKCoordinateRegionMake(self.userLocation.location.coordinate, MKCoordinateSpanMake(LATITUDE_PADDING, LONGITUDE_PADDING));
+    MKCoordinateRegion region = MKCoordinateRegionMake(self.userLocation.location.coordinate, MKCoordinateSpanMake(latitudePadding, longitudePadding));
     [self setRegion:[self regionThatFits:region] animated:animated];
   }
 }

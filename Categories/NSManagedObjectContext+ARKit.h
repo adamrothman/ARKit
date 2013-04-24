@@ -11,6 +11,7 @@
 
 @interface NSManagedObjectContext (ARKit)
 
+// Save this context with optional completion block
 - (void)saveWithSuccess:(void(^)())block;
 
 @end

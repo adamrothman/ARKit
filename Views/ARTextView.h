@@ -15,6 +15,6 @@
 
 @interface ARTextView : UITextView
 
-@property (nonatomic, copy) NSString *placeholder;
+@property (copy, nonatomic) NSString *placeholder;
 
 @end

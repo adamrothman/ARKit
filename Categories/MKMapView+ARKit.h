@@ -7,15 +7,12 @@
 //  Some useful MKMapView extensions.
 //
 
+#import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 
 @interface MKMapView (ARKit)
 
-#define PADDING_MULTIPLIER  1.025
-#define LATITUDE_PADDING    0.0125
-#define LONGITUDE_PADDING   0.0125
-
-// Returns map's annotations without the user's location
+// Get map's annotations without the user's location
 - (NSArray *)annotationsWithoutUserLocation;
 
 // Zoom and center the map so that it displays the given annotation
