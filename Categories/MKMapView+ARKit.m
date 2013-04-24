@@ -28,12 +28,7 @@ static CLLocationDegrees longitudePadding = 0.0125;
 }
 
 - (void)zoomToFitAnnotationsWithUser:(BOOL)user animated:(BOOL)animated {
-  NSArray *annotations = nil;
-  if (user || !self.userLocation) {
-    annotations = self.annotations;
-  } else {
-    annotations = self.annotationsWithoutUserLocation;
-  }
+  NSArray *annotations = user || !self.userLocation ? self.annotations : self.annotationsWithoutUserLocation;
   if (annotations.count) {
     CLLocationCoordinate2D topLeft = CLLocationCoordinate2DMake(-90, 180);
     CLLocationCoordinate2D bottomRight = CLLocationCoordinate2DMake(90, -180);
