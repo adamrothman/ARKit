@@ -9,10 +9,6 @@
 
 #import "MKMapView+ARKit.h"
 
-static CLLocationDegrees paddingMultiplier = 1.025;
-static CLLocationDegrees latitudePadding = 0.0125;
-static CLLocationDegrees longitudePadding = 0.0125;
-
 @implementation MKMapView (ARKit)
 
 - (NSArray *)annotationsWithoutUserLocation {
@@ -22,12 +18,12 @@ static CLLocationDegrees longitudePadding = 0.0125;
   return annotations;
 }
 
-- (void)zoomToFitAnnotation:(id<MKAnnotation>)annotation animated:(BOOL)animated {
-  MKCoordinateRegion region = MKCoordinateRegionMake(annotation.coordinate, MKCoordinateSpanMake(latitudePadding, longitudePadding));
+- (void)zoomToFitAnnotation:(id<MKAnnotation>)annotation span:(MKCoordinateSpan)span animated:(BOOL)animated {
+  MKCoordinateRegion region = MKCoordinateRegionMake(annotation.coordinate, span);
   [self setRegion:[self regionThatFits:region] animated:animated];
 }
 
-- (void)zoomToFitAnnotationsWithUser:(BOOL)user animated:(BOOL)animated {
+- (void)zoomToFitAnnotationsWithUser:(BOOL)user padding:(CGFloat)padding animated:(BOOL)animated {
   NSArray *annotations = user || !self.userLocation ? self.annotations : self.annotationsWithoutUserLocation;
   if (annotations.count) {
     CLLocationCoordinate2D topLeft = CLLocationCoordinate2DMake(-90, 180);
@@ -39,15 +35,15 @@ static CLLocationDegrees longitudePadding = 0.0125;
       bottomRight.longitude = fmax(bottomRight.longitude, annotation.coordinate.longitude);
     }
     CLLocationCoordinate2D center = CLLocationCoordinate2DMake(topLeft.latitude - (topLeft.latitude - bottomRight.latitude) / 2, topLeft.longitude + (bottomRight.longitude - topLeft.longitude) / 2);
-    MKCoordinateSpan span = MKCoordinateSpanMake(fabs(topLeft.latitude - bottomRight.latitude) * paddingMultiplier, fabs(bottomRight.longitude - topLeft.longitude) * paddingMultiplier);
+    MKCoordinateSpan span = MKCoordinateSpanMake(fabs(topLeft.latitude - bottomRight.latitude) * padding, fabs(bottomRight.longitude - topLeft.longitude) * padding);
     MKCoordinateRegion region = MKCoordinateRegionMake(center, span);
     [self setRegion:[self regionThatFits:region] animated:animated];
   }
 }
 
-- (void)zoomToFitUserAnimated:(BOOL)animated {
+- (void)zoomToFitUserWithSpan:(MKCoordinateSpan)span animated:(BOOL)animated {
   if (self.userLocation) {
-    MKCoordinateRegion region = MKCoordinateRegionMake(self.userLocation.location.coordinate, MKCoordinateSpanMake(latitudePadding, longitudePadding));
+    MKCoordinateRegion region = MKCoordinateRegionMake(self.userLocation.location.coordinate, span);
     [self setRegion:[self regionThatFits:region] animated:animated];
   }
 }

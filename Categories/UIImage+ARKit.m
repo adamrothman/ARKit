@@ -168,34 +168,27 @@
 // Returns an affine transform that takes into account the image orientation when drawing a scaled image
 - (CGAffineTransform)transformForOrientation:(CGSize)newSize {
   CGAffineTransform transform = CGAffineTransformIdentity;
-  switch (self.imageOrientation) {
-    case UIImageOrientationDown:           // EXIF = 3
-    case UIImageOrientationDownMirrored:   // EXIF = 4
-      transform = CGAffineTransformTranslate(transform, newSize.width, newSize.height);
-      transform = CGAffineTransformRotate(transform, M_PI);
-      break;
-    case UIImageOrientationLeft:           // EXIF = 6
-    case UIImageOrientationLeftMirrored:   // EXIF = 5
-      transform = CGAffineTransformTranslate(transform, newSize.width, 0);
-      transform = CGAffineTransformRotate(transform, M_PI_2);
-      break;
-    case UIImageOrientationRight:          // EXIF = 8
-    case UIImageOrientationRightMirrored:  // EXIF = 7
-      transform = CGAffineTransformTranslate(transform, 0, newSize.height);
-      transform = CGAffineTransformRotate(transform, -M_PI_2);
-      break;
+  if (self.imageOrientation == UIImageOrientationDown || self.imageOrientation == UIImageOrientationDownMirrored) {
+    // EXIF = 3 or EXIF = 4
+    transform = CGAffineTransformTranslate(transform, newSize.width, newSize.height);
+    transform = CGAffineTransformRotate(transform, M_PI);
+  } else if (self.imageOrientation == UIImageOrientationLeft || self.imageOrientation == UIImageOrientationLeftMirrored) {
+    // EXIF = 6 or EXIF = 5
+    transform = CGAffineTransformTranslate(transform, newSize.width, 0);
+    transform = CGAffineTransformRotate(transform, M_PI_2);
+  } else if (self.imageOrientation == UIImageOrientationRight || self.imageOrientation == UIImageOrientationRightMirrored) {
+    // EXIF = 8 or EXIF = 7
+    transform = CGAffineTransformTranslate(transform, 0, newSize.height);
+    transform = CGAffineTransformRotate(transform, -M_PI_2);
   }
-  switch (self.imageOrientation) {
-    case UIImageOrientationUpMirrored:     // EXIF = 2
-    case UIImageOrientationDownMirrored:   // EXIF = 4
-      transform = CGAffineTransformTranslate(transform, newSize.width, 0);
-      transform = CGAffineTransformScale(transform, -1, 1);
-      break;
-    case UIImageOrientationLeftMirrored:   // EXIF = 5
-    case UIImageOrientationRightMirrored:  // EXIF = 7
-      transform = CGAffineTransformTranslate(transform, newSize.height, 0);
-      transform = CGAffineTransformScale(transform, -1, 1);
-      break;
+  if (self.imageOrientation == UIImageOrientationUpMirrored || self.imageOrientation == UIImageOrientationDownMirrored) {
+    // EXIF = 2 or EXIF = 8
+    transform = CGAffineTransformTranslate(transform, newSize.width, 0);
+    transform = CGAffineTransformScale(transform, -1, 1);
+  } else if (self.imageOrientation == UIImageOrientationLeftMirrored || self.imageOrientation == UIImageOrientationRightMirrored) {
+    // EXIF = 5 or EXIF = 7
+    transform = CGAffineTransformTranslate(transform, newSize.height, 0);
+    transform = CGAffineTransformScale(transform, -1, 1);
   }
   return transform;
 }

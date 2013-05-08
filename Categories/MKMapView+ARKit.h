@@ -16,12 +16,12 @@
 - (NSArray *)annotationsWithoutUserLocation;
 
 // Zoom and center the map so that it displays the given annotation
-- (void)zoomToFitAnnotation:(id<MKAnnotation>)annotation animated:(BOOL)animated;
+- (void)zoomToFitAnnotation:(id<MKAnnotation>)annotation span:(MKCoordinateSpan)span animated:(BOOL)animated;
 
 // Zoom and center the map so that it displays all of its annotations
-- (void)zoomToFitAnnotationsWithUser:(BOOL)user animated:(BOOL)animated;
+- (void)zoomToFitAnnotationsWithUser:(BOOL)user padding:(CGFloat)padding animated:(BOOL)animated;
 
 // Zoom and center the map so that it displays the user's location
-- (void)zoomToFitUserAnimated:(BOOL)animated;
+- (void)zoomToFitUserWithSpan:(MKCoordinateSpan)span animated:(BOOL)animated;
 
 @end
